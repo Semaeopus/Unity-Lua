@@ -426,7 +426,7 @@ public static class LuaDocGenerator
     'prefix': '{0}'
     'body': '{1}'
     'description' : '{2}'
-    'rightLabelHTML': '<span style=""color:#DC9656"">Off Grid</span>'
+    'rightLabelHTML': '<span style=""color:#DC9656"">Lua</span>'
     'descriptionMoreURL' : '{3}'",
             Prefix,
             ToLiteral(Body),

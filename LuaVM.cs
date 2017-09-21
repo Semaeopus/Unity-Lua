@@ -399,7 +399,7 @@ public class LuaVM
     {
         if(s_RemoteDebugger != null)
         {
-			s_RemoteDebugger.AttachToScript (m_LuaScript, "Off Grid Mission script");
+			s_RemoteDebugger.AttachToScript (m_LuaScript, "Lua script");
         }
         else
         {
