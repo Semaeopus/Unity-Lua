@@ -401,7 +401,26 @@ public static class LuaDocGenerator
                 snippets.AppendLine(finalBlock);
             }
         }
+        
+        foreach (LuaEnumInfo enumInfo in GetAllEnums())
+        {
+            foreach (LuaEnumValueInfo enumValueInfo in enumInfo.values)
+            {
+                if (enumValueInfo.Attribute != null && enumValueInfo.Attribute.hidden)
+                {
+                    continue;
+                }
+                
+                snippet.prefix = string.Format("{0}.{1}", enumInfo.Attribute.name, enumValueInfo.StringValue);
+                snippet.body[0] = snippet.prefix;
+                snippet.description = enumValueInfo.Attribute != null ? enumValueInfo.Attribute.description : string.Empty;
 
+                string finalBlock = string.Format("\"{0}\" : {1},", snippet.prefix, JsonUtility.ToJson(snippet, true));
+                
+                snippets.AppendLine(finalBlock);
+            }
+        }
+        
         EditorGUIUtility.systemCopyBuffer = snippets.ToString();
     }
 
