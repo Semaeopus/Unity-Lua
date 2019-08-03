@@ -167,6 +167,27 @@ public static class LuaDocGenerator
 
         return result;
     }
+    
+    private class Config 
+    {
+        public string LuaProjectPath;
+    }
+
+    private static Config GetConfig() 
+    {
+        var configFile = Path.Combine(Application.dataPath, "..", ".unity-lua.json");
+        if (File.Exists(configFile)) {
+            var file = File.ReadAllText(configFile);
+            return JsonUtility.FromJson<Config>(file);
+        }
+        
+         var defaultConfig = new Config {
+            LuaProjectPath = Path.Combine(Application.dataPath, "Scripts", "Lua")
+        };
+
+        File.WriteAllText(configFile, JsonUtility.ToJson(defaultConfig));
+        return defaultConfig;
+    }
 
     /// <summary>
     /// Generate MediaWiki pages for all Lua apis and enums
@@ -420,8 +441,21 @@ public static class LuaDocGenerator
                 snippets.AppendLine(finalBlock);
             }
         }
+
+        Config config = GetConfig();
+
+        string snippetDir = Path.Combine(config.LuaProjectPath, ".vscode");
+        Directory.CreateDirectory(snippetDir);
         
-        EditorGUIUtility.systemCopyBuffer = snippets.ToString();
+        string snippetFilePath = Path.Combine(snippetDir, "lua.code-snippets");
+        
+        StreamWriter file = File.CreateText(snippetFilePath);
+        
+        file.WriteLine("{");
+        file.Write(snippets);
+        file.WriteLine("}");
+        
+        file.Close();
     }
 
     private class AtomSnippet
@@ -616,6 +650,5 @@ public static class LuaDocGenerator
 
         return result;
     }
-    
 }
 #endif // UNITY_EDITOR
