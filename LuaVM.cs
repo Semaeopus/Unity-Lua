@@ -66,7 +66,7 @@ public class LuaVM
     public LuaVM(VMSettings vmSettings)
     {
         m_LuaScript =
-            new Script(CoreModules.Preset_SoftSandbox)
+            new Script(CoreModules.Preset_Default)
             {
                 Options =
                 {
